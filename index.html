@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamboRide - Kenya's Choice</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Kenyan Flag CSS Background */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, 
+                #000000 0%, #000000 28%, 
+                #ffffff 28%, #ffffff 33%, 
+                #990000 33%, #990000 66%, 
+                #ffffff 66%, #ffffff 71%, 
+                #006600 71%, #006600 100%);
+            padding: 20px;
+        }
+
+        .booking-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 { text-align: center; color: #333; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        label { display: block; margin: 12px 0 6px; color: #555; font-weight: bold; }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus, select:focus { border-color: #006600; }
+
+        .vehicle-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .vehicle-box {
+            flex: 1;
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .vehicle-box.active {
+            border-color: #990000;
+            background-color: #fff5f5;
+            color: #990000;
+        }
+
+        button {
+            width: 100%;
+            background-color: #006600;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #004d00; }
+        #status-message { margin-top: 15px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="booking-container">
+    <h2>JamboRide Kenya</h2>
+    
+    <label>Select Ride Type</label>
+    <div class="vehicle-options">
+        <div class="vehicle-box active" onclick="selectVehicle('boda', 50)" id="type-boda">🏍️ Boda Boda</div>
+        <div class="vehicle-box" onclick="selectVehicle('cab', 200)" id="type-cab">🚗 Cab / Car</div>
+    </div>
+
+    <form id="rideForm">
+        <label for="pickup">Pickup Location</label>
+        <input type="text" id="pickup" placeholder="e.g. Westlands, Nairobi" required>
+
+        <label for="destination">Destination</label>
+        <input type="text" id="destination" placeholder="e.g. CBD, Nairobi" required>
+
+        <label for="phone">M-Pesa Phone Number</label>
+        <input type="tel" id="phone" placeholder="e.g. 0712345678" required>
+
+        <label>Estimated Fare (KES)</label>
+        <input type="text" id="fare" value="50" readonly style="background-color: #eee;">
+
+        <button type="submit">Request & Pay via M-Pesa</button>
+    </form>
+
+    <div id="status-message"></div>
+</div>
+
+<script>
+    let selectedType = 'boda';
+
+    function selectVehicle(type, baseFare) {
+        selectedType = type;
+        document.getElementById('fare').value = baseFare;
+        document.querySelectorAll('.vehicle-box').forEach(box => box.classList.remove('active'));
+        document.getElementById(`type-${type}`).classList.add('active');
+    }
+
+    document.getElementById('rideForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const statusDiv = document.getElementById('status-message');
+        statusDiv.style.color = 'blue';
+        statusDiv.innerText = 'Processing STK Push request... Check your phone!';
+
+        const paymentData = {
+            phone: document.getElementById('phone').value,
+            amount: document.getElementById('fare').value,
+            pickup: document.getElementById('pickup').value,
+            destination: document.getElementById('destination').value,
+            rideType: selectedType
+        };
+
+        try {
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(paymentData)
+            });
+            const data = await response.json();
+            
+            if(data.ResponseCode === '0') {
+                statusDiv.style.color = 'green';
+                statusDiv.innerText = 'STK Push sent successfully! Enter M-Pesa PIN to complete.';
+            } else {
+                statusDiv.style.color = 'red';
+                statusDiv.innerText = 'Error processing request. Try again.';
+            }
+        } catch (error) {
+            statusDiv.style.color = 'red';
+            statusDiv.innerText = 'Server error connection.';
+        }
+    });
+</script>
+</body>
+  </html>
+          
