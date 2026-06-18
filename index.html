@@ -7,63 +7,63 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom Premium Bolt-inspired Colors */
-        .bg-bolt-green { background-color: #00CD69; }
-        .text-bolt-green { color: #00CD69; }
-        .border-bolt-green { border-color: #00CD69; }
+        /* Custom Shupavu Green Theme */
+        .bg-shupavu-green { background-color: #00CD69; }
+        .text-shupavu-green { color: #00CD69; }
+        .border-shupavu-green { border-color: #00CD69; }
         
-        .app-screen { display: none; }
+        .app-screen { display: none; width: 100%; height: 100%; }
         .app-screen.active { display: flex; }
 
-        /* Realistic Vector Map Concept */
+        /* Responsive vector map that fits any container */
         .realistic-map {
+            width: 100%;
+            height: 100%;
             background-color: #f4f6f8;
             background-image: 
                 linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
+            background-size: 8vw 8vw; /* Scales grid with screen width */
+            position: relative;
         }
-        /* Custom Styled Simulated Vector Roads */
+        /* Fluid simulated roads that scale */
         .road-primary {
             position: absolute;
             background: #ffffff;
-            height: 28px;
+            height: 3vh; /* Height scales with viewport height */
             width: 150%;
             top: 45%;
             left: -25%;
             transform: rotate(-12deg);
-            border-top: 2px solid #e2e8f0;
-            border-bottom: 2px solid #e2e8f0;
+            border-top: 1.5px solid #e2e8f0;
+            border-bottom: 1.5px solid #e2e8f0;
         }
         .road-secondary {
             position: absolute;
             background: #ffffff;
-            width: 24px;
+            width: 5vw; /* Width scales with viewport width */
             height: 150%;
             left: 40%;
             top: -25%;
             transform: rotate(25deg);
-            border-left: 2px solid #e2e8f0;
-            border-right: 2px solid #e2e8f0;
+            border-left: 1.5px solid #e2e8f0;
+            border-right: 1.5px solid #e2e8f0;
         }
     </style>
 </head>
-<body class="bg-slate-950 min-h-screen flex justify-center items-center font-sans antialiased text-slate-900">
+<body class="bg-slate-950 min-h-screen font-sans antialiased text-slate-900 flex flex-col items-center">
 
-    <div class="w-full max-w-md h-screen md:h-[844px] md:rounded-[40px] bg-white shadow-2xl overflow-hidden relative flex flex-col border-0 md:border-[8px] border-slate-900">
+    <div class="w-full h-full flex flex-col flex-1 bg-white relative overflow-hidden">
         
-        <div class="bg-transparent px-6 pt-3 pb-2 flex justify-between items-center text-xs font-bold text-slate-800 z-30 absolute top-0 left-0 w-full">
-            <span>17:35</span>
-            <div class="flex items-center gap-1.5">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-full text-sm text-bolt-green"></i>
+        <div id="top-menu" class="hidden absolute top-4 left-4 z-40">
+            <div class="w-12 h-12 bg-white rounded-2xl shadow-xl border border-slate-100 flex items-center justify-center text-slate-800 font-bold cursor-pointer">
+                <i class="fas fa-bars text-lg"></i>
             </div>
         </div>
 
-        <div id="screen-splash" class="app-screen active flex-1 flex-col justify-between p-6 bg-slate-950 text-white text-center pt-20">
-            <div class="my-auto space-y-6">
-                <div class="w-24 h-24 bg-bolt-green rounded-[28px] mx-auto flex items-center justify-center shadow-xl shadow-emerald-900/30">
+        <div id="screen-splash" class="app-screen active flex-1 flex-col justify-center items-center p-6 bg-slate-950 text-white text-center">
+            <div class="my-auto space-y-6 flex-1 flex flex-col justify-center">
+                <div class="w-24 h-24 bg-shupavu-green rounded-[28px] flex items-center justify-center shadow-xl">
                     <i class="fas fa-bolt text-4xl text-slate-950"></i>
                 </div>
                 <div class="space-y-2">
@@ -71,7 +71,7 @@
                     <p class="text-slate-400 font-medium text-sm px-6">Fast, affordable rides at the tap of a button.</p>
                 </div>
             </div>
-            <button onclick="navigateTo('screen-auth')" class="w-full bg-bolt-green text-slate-950 font-extrabold py-4 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.99] transition text-base tracking-wide">
+            <button onclick="navigateTo('screen-auth')" class="w-full bg-shupavu-green text-slate-950 font-extrabold py-4 rounded-2xl active:scale-[0.99] transition tracking-wide">
                 Get Started
             </button>
         </div>
@@ -84,7 +84,7 @@
                 
                 <div class="mt-8 flex gap-3">
                     <div class="bg-slate-100 rounded-xl px-4 flex items-center font-bold text-slate-800 border border-slate-200/50">+254</div>
-                    <input type="tel" placeholder="712345678" class="flex-1 bg-slate-100 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-bolt-green font-bold text-lg text-slate-900 border border-slate-200/50">
+                    <input type="tel" placeholder="712345678" class="flex-1 bg-slate-100 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-shupavu-green font-bold text-lg text-slate-900 border border-slate-200/50">
                 </div>
             </div>
             <button onclick="navigateTo('screen-home')" class="w-full bg-slate-900 text-white font-extrabold py-4 rounded-2xl shadow-md active:scale-[0.99] transition tracking-wide">
@@ -92,23 +92,176 @@
             </button>
         </div>
 
-        <div id="screen-home" class="app-screen flex-1 flex-col justify-between relative bg-slate-50 pt-12">
-            <div class="absolute inset-0 realistic-map z-0">
+        <div id="screen-home" class="app-screen flex-1 flex-col relative bg-slate-50 pt-12">
+            <div class="realistic-map z-0 flex-1">
                 <div class="road-primary"></div>
                 <div class="road-secondary"></div>
-                <div class="absolute top-1/4 left-1/3 text-slate-900 text-xl"><i class="fas fa-car-side filter drop-shadow"></i></div>
-                <div class="absolute top-2/3 right-1/3 text-slate-900 text-xl"><i class="fas fa-motorcycle filter drop-shadow"></i></div>
+                <div class="absolute top-1/4 left-1/3 text-slate-900 text-xl"><i class="fas fa-car-side"></i></div>
+                <div class="absolute top-2/3 right-1/3 text-slate-900 text-xl"><i class="fas fa-motorcycle"></i></div>
                 <div class="absolute top-[48%] left-[37%] flex items-center justify-center">
-                    <span class="absolute w-8 h-8 bg-blue-500/20 rounded-full animate-ping"></span>
                     <div class="w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow-md z-10"></div>
                 </div>
             </div>
 
-            <div class="z-10 px-4 pt-4">
-                <div class="w-12 h-12 bg-white rounded-xl shadow-lg border border-slate-100 flex items-center justify-center text-slate-800 font-bold cursor-pointer">
-                    <i class="fas fa-bars text-lg"></i>
+            <div class="z-10 w-full bg-white p-5 rounded-t-[32px] shadow-[0_-8px_30px_rgba(0,0,0,0.06)] border-t border-slate-100 space-y-4">
+                <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto"></div>
+                <div class="bg-slate-100 rounded-2xl p-4 flex items-center gap-3 border border-slate-200/40 cursor-pointer" onclick="navigateTo('screen-options')">
+                    <div class="w-3 h-3 bg-shupavu-green rounded-full flex-shrink-0"></div>
+                    <span class="font-extrabold text-slate-800 text-base flex-1">Where to?</span>
+                    <i class="fas fa-search text-slate-400 text-sm"></i>
                 </div>
             </div>
+        </div>
 
-            <div class="z-10 bg-white p-5 rounded-t-[32px] shadow-[0_-8px_30px_rgba(0,0,0,0.06)] border-t border-slate-1
-    
+        <div id="screen-options" class="app-screen flex-1 flex-col justify-between relative bg-slate-50">
+            <div class="h-[30vh] w-full realistic-map relative border-b border-slate-100 z-0">
+                <div class="road-primary"></div>
+                <div class="road-secondary"></div>
+                <div class="absolute top-[42%] left-[38%] text-blue-600 text-xl"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="absolute top-[48%] left-[55%] text-shupavu-green text-xl"><i class="fas fa-flag-checkered"></i></div>
+                <button onclick="navigateTo('screen-home')" class="absolute top-4 left-4 w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-md text-slate-800 border border-slate-100"><i class="fas fa-arrow-left"></i></button>
+            </div>
+
+            <div class="flex-1 bg-white rounded-t-[32px] shadow-[0_-10px_30px_rgba(0,0,0,0.08)] p-5 flex flex-col justify-between z-10 -mt-6">
+                <div class="overflow-y-auto pr-1">
+                    <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
+                    <h3 class="font-black text-xl text-slate-900 mb-4 tracking-tight">Choose a ride</h3>
+                    
+                    <div class="space-y-2.5">
+                        <div onclick="selectTier(this)" class="ride-tier-card border-2 border-shupavu-green bg-emerald-50/20 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-emerald-100/60 rounded-xl flex items-center justify-center text-slate-900 text-xl"><i class="fas fa-car-side text-2xl"></i></div>
+                                <div>
+                                    <h4 class="font-extrabold text-slate-900 text-base">Shupavu Eco</h4>
+                                    <p class="text-xs text-slate-500 font-semibold">Near you • 2 min away</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-slate-900 text-base">KES 320</span>
+                        </div>
+
+                        <div onclick="selectTier(this)" class="ride-tier-card border border-slate-200 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all hover:bg-slate-50/80">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-amber-100/60 rounded-xl flex items-center justify-center text-slate-900 text-xl"><i class="fas fa-motorcycle text-2xl"></i></div>
+                                <div>
+                                    <h4 class="font-extrabold text-slate-900 text-base">Shupavu Boda</h4>
+                                    <p class="text-xs text-slate-500 font-semibold">Beat traffic • 1 min away</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-slate-900 text-base">KES 150</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4 p-3 bg-slate-50 rounded-xl text-sm border border-slate-100 cursor-pointer">
+                        <div class="flex items-center gap-2 font-bold text-slate-700">
+                            <i class="fas fa-wallet text-emerald-600 text-base"></i> M-PESA
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
+                    </div>
+                </div>
+
+                <button onclick="navigateTo('screen-searching')" class="w-full bg-shupavu-green text-slate-950 font-black py-4 rounded-2xl shadow-lg active:scale-[0.99] transition mt-4 text-base tracking-wide">
+                    Confirm Ride
+                </button>
+            </div>
+        </div>
+
+        <div id="screen-searching" class="app-screen flex-1 flex-col justify-center items-center p-6 bg-slate-950 text-white relative">
+            <div class="space-y-6 text-center z-10 flex-1 flex flex-col justify-center">
+                <div class="relative w-36 h-36 flex items-center justify-center">
+                    <div class="w-20 h-20 bg-shupavu-green rounded-[24px] flex items-center justify-center shadow-2xl">
+                        <i class="fas fa-bolt text-3xl text-slate-950"></i>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-xl font-black tracking-tight">Looking for your driver...</h3>
+                    <p class="text-slate-400 text-sm max-w-[200px] mx-auto">Connecting with matching partners nearby.</p>
+                </div>
+            </div>
+            <button onclick="navigateTo('screen-match')" class="absolute bottom-8 bg-slate-900 border border-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition active:scale-95">
+                Simulate Match Found
+            </button>
+        </div>
+
+        <div id="screen-match" class="app-screen flex-1 flex-col justify-between relative bg-slate-50 pt-12">
+            <div class="flex-1 w-full realistic-map relative z-0 shadow-inner">
+                <div class="road-primary"></div>
+                <div class="road-secondary"></div>
+                
+                <div class="absolute top-[43%] left-[43%] flex flex-col items-center">
+                    <div class="bg-slate-900 text-white text-[10px] font-black px-2 py-0.5 rounded shadow mb-1">David</div>
+                    <div class="w-9 h-9 bg-shupavu-green rounded-full flex items-center justify-center shadow-lg text-slate-950 text-sm border-2 border-white">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                </div>
+                <div class="absolute top-[40%] left-[65%] text-blue-600 text-xl"><i class="fas fa-map-pin"></i></div>
+            </div>
+
+            <div class="w-full bg-white p-5 rounded-t-[32px] shadow-[0_-10px_30px_rgba(0,0,0,0.06)] border-t border-slate-100 space-y-4 z-10 -mt-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md uppercase tracking-wider">Arriving in 3 Mins</span>
+                        <h4 class="font-black text-2xl text-slate-900 mt-2 tracking-tight">KCD 432X</h4>
+                        <p class="text-xs text-slate-500 font-bold">Silver Toyota Fielder</p>
+                    </div>
+                    <div class="text-right flex flex-col items-end flex-shrink-0">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80" alt="Driver" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex items-center gap-1 text-xs font-black text-amber-500 mt-1">
+                            <i class="fas fa-star text-[9px]"></i> 4.9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="h-[1px] bg-slate-100"></div>
+
+                <div class="flex items-center justify-between py-0.5">
+                    <div class="flex-1">
+                        <p class="font-extrabold text-slate-800 text-base">David Omondi</p>
+                        <p class="text-xs text-slate-400 font-semibold">Verified Driver Partner</p>
+                    </div>
+                    <div class="flex gap-2 flex-shrink-0 ml-3">
+                        <a href="tel:#" class="w-11 h-11 bg-slate-100 rounded-xl flex items-center justify-center text-slate-700 shadow-sm"><i class="fas fa-phone-alt text-sm"></i></a>
+                        <button class="w-11 h-11 bg-slate-100 rounded-xl flex items-center justify-center text-slate-700 shadow-sm"><i class="fas fa-comment-alt text-sm"></i></button>
+                    </div>
+                </div>
+
+                <button onclick="navigateTo('screen-home')" class="w-full bg-slate-100 text-rose-600 font-extrabold py-3.5 rounded-xl text-sm transition tracking-wide border border-slate-200/20">
+                    Cancel Request
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function navigateTo(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.app-screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            // Show targeted screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Manage top menu visibility (Hide on splash/auth, show on main screens)
+            if (screenId === 'screen-splash' || screenId === 'screen-auth' || screenId === 'screen-searching') {
+                document.getElementById('top-menu').classList.add('hidden');
+            } else {
+                document.getElementById('top-menu').classList.remove('hidden');
+            }
+        }
+
+        function selectTier(element) {
+            // Reset cards border styling
+            document.querySelectorAll('.ride-tier-card').forEach(card => {
+                card.classList.remove('border-shupavu-green', 'bg-emerald-50/20', 'border-2');
+                card.classList.add('border-slate-200', 'border');
+            });
+            // Highlight selected card
+            element.classList.remove('border-slate-200', 'border');
+            element.classList.add('border-shupavu-green', 'bg-emerald-50/20', 'border-2');
+        }
+    </script>
+</body>
+                        </html>
+                        
