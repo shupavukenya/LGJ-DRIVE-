@@ -3,424 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shupavu Ride MVP</title>
+    <title>Shupavu Ride</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .phone-container {
-            max-width: 412px;
-            height: 844px;
-        }
-        .app-screen {
-            display: none;
-        }
-        .app-screen.active {
-            display: flex;
-        }
-        /* Custom map styling to make it look pleasing without live APIs */
-        .vector-map {
-            background-color: #f1f5f9;
+        /* Custom Premium Bolt-inspired Colors */
+        .bg-bolt-green { background-color: #00CD69; }
+        .text-bolt-green { color: #00CD69; }
+        .border-bolt-green { border-color: #00CD69; }
+        
+        .app-screen { display: none; }
+        .app-screen.active { display: flex; }
+
+        /* Realistic Vector Map Concept */
+        .realistic-map {
+            background-color: #f4f6f8;
             background-image: 
-                radial-gradient(#cbd5e1 1px, transparent 1px), 
-                linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-                linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-            background-size: 24px 24px, 40px 40px, 40px 40px;
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
-        .map-road-1 {
+        /* Custom Styled Simulated Vector Roads */
+        .road-primary {
             position: absolute;
             background: #ffffff;
-            height: 16px;
-            width: 100%;
-            top: 40%;
-            transform: rotate(-5deg);
-            box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
+            height: 28px;
+            width: 150%;
+            top: 45%;
+            left: -25%;
+            transform: rotate(-12deg);
+            border-top: 2px solid #e2e8f0;
+            border-bottom: 2px solid #e2e8f0;
         }
-        .map-road-2 {
+        .road-secondary {
             position: absolute;
             background: #ffffff;
-            width: 20px;
-            height: 100%;
-            left: 35%;
-            transform: rotate(15deg);
-            box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
+            width: 24px;
+            height: 150%;
+            left: 40%;
+            top: -25%;
+            transform: rotate(25deg);
+            border-left: 2px solid #e2e8f0;
+            border-right: 2px solid #e2e8f0;
         }
     </style>
 </head>
-<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4 font-sans text-slate-800">
+<body class="bg-slate-950 min-h-screen flex justify-center items-center font-sans antialiased text-slate-900">
 
-    <div class="phone-container w-full bg-white rounded-[40px] shadow-2xl overflow-hidden relative border-[8px] border-slate-800 flex flex-col">
+    <div class="w-full max-w-md h-screen md:h-[844px] md:rounded-[40px] bg-white shadow-2xl overflow-hidden relative flex flex-col border-0 md:border-[8px] border-slate-900">
         
-        <div class="bg-white px-6 pt-3 pb-2 flex justify-between items-center text-xs font-semibold text-slate-700 z-10">
-            <span>4:38 PM</span>
+        <div class="bg-transparent px-6 pt-3 pb-2 flex justify-between items-center text-xs font-bold text-slate-800 z-30 absolute top-0 left-0 w-full">
+            <span>17:35</span>
             <div class="flex items-center gap-1.5">
                 <i class="fas fa-signal"></i>
                 <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-three-quarters text-sm"></i>
+                <i class="fas fa-battery-full text-sm text-bolt-green"></i>
             </div>
         </div>
 
-        <div id="screen-splash" class="app-screen active flex-1 flex-col justify-between p-6 bg-gradient-to-br from-amber-500 to-orange-600 text-white text-center">
-            <div class="my-auto space-y-4">
-                <div class="w-24 h-24 bg-white rounded-3xl mx-auto flex items-center justify-center shadow-xl animate-bounce">
-                    <i class="fas fa-taxi text-4xl text-orange-600"></i>
+        <div id="screen-splash" class="app-screen active flex-1 flex-col justify-between p-6 bg-slate-950 text-white text-center pt-20">
+            <div class="my-auto space-y-6">
+                <div class="w-24 h-24 bg-bolt-green rounded-[28px] mx-auto flex items-center justify-center shadow-xl shadow-emerald-900/30">
+                    <i class="fas fa-bolt text-4xl text-slate-950"></i>
                 </div>
-                <h1 class="text-4xl font-black tracking-tight">Shupavu Ride</h1>
-                <p class="text-orange-100 font-medium">Your reliable connection to a swift, safe ride.</p>
-            </div>
-            <button onclick="navigateTo('screen-auth')" class="w-full bg-white text-orange-600 font-bold py-4 rounded-xl shadow-lg hover:bg-orange-50 transition active:scale-[0.98]">
-                Get Started <i class="fas fa-arrow-right ml-2"></i>
-            </button>
-        </div>
-
-        <div id="screen-auth" class="app-screen flex-1 flex-col justify-between p-6 bg-slate-50">
-            <div>
-                <button onclick="navigateTo('screen-splash')" class="text-slate-600 py-2"><i class="fas fa-chevron-left mr-2"></i> Back</button>
-                <h2 class="text-2xl font-bold text-slate-900 mt-4">Verify Your Number</h2>
-                <p class="text-slate-500 text-sm mt-1">Enter your phone number to book a Shupavu Ride.</p>
-                
-                <div class="mt-8 space-y-4">
-                    <div class="flex gap-2">
-                        <div class="bg-white border border-slate-200 rounded-xl px-3 flex items-center font-medium text-slate-700 shadow-sm">+254</div>
-                        <input type="tel" placeholder="712345678" class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3.5 focus:outline-none focus:border-orange-500 font-medium shadow-sm">
-                    </div>
-                    <div class="flex items-center gap-2 text-xs text-slate-500 px-1">
-                        <input type="checkbox" id="terms" checked class="accent-orange-500">
-                        <label for="terms">I agree to the Terms and Privacy Policy</label>
-                    </div>
-                </div>
-            </div>
-            <button onclick="navigateTo('screen-home')" class="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 transition active:scale-[0.98]">
-                Continue
-            </button>
-        </div>
-
-        <div id="screen-home" class="app-screen flex-1 flex-col justify-between relative bg-slate-100">
-            <div class="absolute inset-0 vector-map">
-                <div class="map-road-1"></div>
-                <div class="map-road-2"></div>
-                <div class="absolute top-1/3 left-1/4 text-emerald-500 text-xl opacity-60"><i class="fas fa-car"></i></div>
-                <div class="absolute top-2/3 right-1/4 text-orange-500 text-xl opacity-70 animate-pulse"><i class="fas fa-car"></i></div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-                    <span class="absolute w-8 h-8 bg-blue-500/30 rounded-full animate-ping"></span>
-                    <i class="fas fa-street-view text-3xl text-blue-600 relative z-10"></i>
-                </div>
-            </div>
-
-            <div class="z-10 p-4 w-full">
-                <div class="bg-white p-3 rounded-2xl shadow-xl space-y-2 border border-slate-100">
-                    <div class="flex items-center gap-3 px-2 py-1">
-                        <i class="fas fa-circle text-[10px] text-blue-500"></i>
-                        <input type="text" value="Current Location" readonly class="w-full text-sm font-semibold text-slate-700 focus:outline-none">
-                    </div>
-                    <div class="h-[1px] bg-slate-100 my-1"></div>
-                    <div class="flex items-center gap-3 px-2 py-1">
-                        <i class="fas fa-square text-[10px] text-orange-500"></i>
-                        <input type="text" id="destination-input" placeholder="Where to?" class="w-full text-sm font-bold text-slate-900 focus:outline-none placeholder-slate-400">
-                    </div>
-                </div>
-            </div>
-
-            <div class="z-10 bg-white p-5 rounded-t-[32px] shadow-2xl border-t border-slate-100/80 space-y-4">
-                <h3 class="font-black text-xl text-slate-900 tracking-tight">Ready to head out?</h3>
-                <button onclick="confirmDestination()" class="w-full bg-slate-950 text-white font-bold py-4 rounded-xl shadow-md hover:bg-slate-800 transition flex items-center justify-center gap-2 tracking-wide">
-                    <i class="fas fa-search text-xs opacity-80"></i> Find Shupavu Ride
-                </button>
-            </div>
-        </div>
-
-        <div id="screen-options" class="app-screen flex-1 flex-col justify-between relative bg-slate-100">
-            <div class="h-1/3 vector-map relative">
-                <div class="map-road-1"></div>
-                <div class="map-road-2"></div>
-                <div class="absolute top-1/3 left-1/3 text-blue-600 text-lg"><i class="fas fa-map-marker-alt"></i></div>
-                <div class="absolute top-1/2 right-1/3 text-orange-500 text-lg"><i class="fas fa-flag-checkered"></i></div>
-                <button onclick="navigateTo('screen-home')" class="absolute top-4 left-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md text-slate-700 active:scale-95 transition"><i class="fas fa-arrow-left"></i></button>
-            </div>
-
-            <div class="flex-1 bg-white rounded-t-[32px] shadow-2xl border-t border-slate-100 p-5 flex flex-col justify-between z-10 -mt-6">
-                <div>
-                    <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
-                    <h3 class="font-black text-xl text-slate-900 mb-4 tracking-tight">Select Ride Tier</h3>
-                    
-                    <div class="space-y-3">
-                        <div onclick="selectTier(this)" class="ride-tier-card border-2 border-orange-500 bg-orange-50/50 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 text-xl"><i class="fas fa-car text-2xl"></i></div>
-                                <div>
-                                    <h4 class="font-extrabold text-slate-900 text-base">Shupavu Eco</h4>
-                                    <p class="text-xs text-slate-500 font-medium">Everyday affordable • 3 min away</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="font-black text-slate-900 text-base">KES 350</span>
-                            </div>
-                        </div>
-                        <div onclick="selectTier(this)" class="ride-tier-card border border-slate-200 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition hover:bg-slate-50">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-xl"><i class="fas fa-bolt text-2xl"></i></div>
-                                <div>
-                                    <h4 class="font-extrabold text-slate-900 text-base">Shupavu Comfort</h4>
-                                    <p class="text-xs text-slate-500 font-medium">Newer vehicles with AC • 2 min away</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="font-black text-slate-900 text-base">KES 500</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between mt-5 p-3.5 bg-slate-50 rounded-xl text-sm border border-slate-100">
-                        <div class="flex items-center gap-2 font-bold text-slate-700">
-                            <i class="fas fa-wallet text-emerald-600 text-base"></i> M-PESA / Cash
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
-                    </div>
-                </div>
-
-                <button onclick="navigateTo('screen-searching')" class="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 transition active:scale-[0.98] mt-4 tracking-wide">
-                    Confirm Booking
-                </button>
-            </div>
-        </div>
-
-        <div id="screen-searching" class="app-screen flex-1 flex-col justify-center items-center p-6 bg-slate-950 text-white relative">
-            <div class="space-y-6 text-center z-10">
-                <div class="relative w-36 h-36 mx-auto flex items-center justify-center">
-                    <div class="absolute inset-0 bg-orange-500 rounded-full animate-ping opacity-20"></div>
-                    <div class="absolute -inset-6 bg-orange-500 rounded-full animate-pulse opacity-5"></div>
-                    <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-amber-600 rounded-3xl flex items-center justify-center shadow-xl relative">
-                        <i class="fas fa-search-location text-3xl text-white"></i>
-                    </div>
-                </div>
-                
                 <div class="space-y-2">
-                    <h3 class="text-2xl font-black tracking-tight">Connecting your ride...</h3>
-                    <p class="text-slate-400 text-sm max-w-[260px] mx-auto">Matching you with the nearest professional Shupavu driver.</p>
+                    <h1 class="text-4xl font-black tracking-tight">Shupavu</h1>
+                    <p class="text-slate-400 font-medium text-sm px-6">Fast, affordable rides at the tap of a button.</p>
                 </div>
             </div>
-
-            <button onclick="navigateTo('screen-match')" class="absolute bottom-8 bg-slate-900 text-slate-400 border border-slate-800 px-5 py-2.5 rounded-full text-xs font-bold hover:text-white transition active:scale-95 shadow-inner">
-                Simulate Match Found
+            <button onclick="navigateTo('screen-auth')" class="w-full bg-bolt-green text-slate-950 font-extrabold py-4 rounded-2xl shadow-lg shadow-emerald-500/20 active:scale-[0.99] transition text-base tracking-wide">
+                Get Started
             </button>
         </div>
 
-        <div id="screen-match" class="app-screen flex-1 flex-col justify-between relative bg-slate-100">
-            <div class="flex-1 vector-map relative shadow-inner">
-                <div class="map-road-1"></div>
-                <div class="map-road-2"></div>
+        <div id="screen-auth" class="app-screen flex-1 flex-col justify-between p-6 bg-white pt-16">
+            <div>
+                <button onclick="navigateTo('screen-splash')" class="text-slate-800 font-bold p-1"><i class="fas fa-arrow-left mr-2"></i></button>
+                <h2 class="text-2xl font-black text-slate-900 mt-6 tracking-tight">Enter your mobile number</h2>
+                <p class="text-slate-500 text-sm mt-1">We'll send an SMS confirmation code.</p>
                 
-                <div class="absolute top-[42%] left-[45%] flex flex-col items-center animate-bounce">
-                    <div class="bg-slate-950 text-white text-[10px] font-black px-2 py-0.5 rounded shadow-md mb-1 flex items-center gap-1">
-                        <i class="fas fa-star text-amber-400 text-[8px]"></i> David
-                    </div>
-                    <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center shadow-lg text-white text-base border-2 border-white">
-                        <i class="fas fa-car-side"></i>
-                    </div>
-                </div>
-
-                <div class="absolute top-[38%] left-[70%] text-blue-600 text-2xl drop-shadow-md">
-                    <i class="fas fa-map-pin"></i>
+                <div class="mt-8 flex gap-3">
+                    <div class="bg-slate-100 rounded-xl px-4 flex items-center font-bold text-slate-800 border border-slate-200/50">+254</div>
+                    <input type="tel" placeholder="712345678" class="flex-1 bg-slate-100 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-bolt-green font-bold text-lg text-slate-900 border border-slate-200/50">
                 </div>
             </div>
-
-            <div class="bg-white p-5 rounded-t-[32px] shadow-2xl border-t border-slate-100 space-y-4 z-10 -mt-4">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span class="bg-orange-100 text-orange-800 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Arriving in 3 Mins</span>
-                        <h4 class="font-black text-2xl text-slate-900 mt-2 tracking-tight">KCD 432X</h4>
-                        <p class="text-sm text-slate-500 font-bold">Silver Toyota Fielder</p>
-                    </div>
-                    <div class="text-right">
-                        <div class="w-14 h-14 bg-slate-200 rounded-full overflow-hidden border-2 border-slate-100 shadow-md">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80" alt="Driver" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex items-center justify-end gap-1 text-xs font-black text-amber-500 mt-1.5">
-                            <i class="fas fa-star text-[10px]"></i> 4.9
-                        </div>
-                    </div>
-                </div>
-
-                <div class="h-[1px] bg-slate-100"></div>
-
-                <div class="flex items-center justify-between py-1">
-                    <div>
-                        <p class="font-extrabold text-slate-800 text-base">David Omondi</p>
-                        <p class="text-xs text-slate-400 font-medium">Shupavu Certified Partner</p>
-                    </div>
-                    <div class="flex gap-2.5">
-                        <a href="tel:#" class="w-11 h-11 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-700 hover:bg-slate-100 shadow-sm transition active:scale-95"><i class="fas fa-phone-alt text-sm"></i></a>
-                        <button class="w-11 h-11 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-700 hover:bg-slate-100 shadow-sm transition active:scale-95"><i class="fas fa-comment-alt text-sm"></i></button>
-                    </div>
-                </div>
-
-                <button onclick="navigateTo('screen-home')" class="w-full bg-rose-50 text-rose-600 font-extrabold py-3.5 rounded-xl text-sm transition hover:bg-rose-100 tracking-wide">
-                    Cancel Request
-                </button>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        function navigateTo(screenId) {
-            document.querySelectorAll('.app-screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function confirmDestination() {
-            navigateTo('screen-options');
-        }
-
-        function selectTier(element) {
-            document.querySelectorAll('.ride-tier-card').forEach(card => {
-                card.classList.remove('border-orange-500', 'bg-orange-50/50', 'border-2');
-                card.classList.add('border-slate-200', 'border');
-            });
-            element.classList.remove('border-slate-200', 'border');
-            element.classList.add('border-orange-500', 'bg-orange-50/50', 'border-2');
-        }
-    </script>
-</body>
-</html>
-
-                                <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
-                    <h3 class="font-bold text-xl text-slate-900 mb-4">Select Ride Tier</h3>
-                    
-                    <div class="space-y-3">
-                        <div onclick="selectTier(this)" class="ride-tier-card border-2 border-orange-500 bg-orange-50/50 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 text-xl"><i class="fas fa-car text-2xl"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-slate-900 text-base">Shupavu Eco</h4>
-                                    <p class="text-xs text-slate-500">Everyday affordable rides • 3 min away</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="font-bold text-slate-900 text-base">KES 350</span>
-                            </div>
-                        </div>
-                        <div onclick="selectTier(this)" class="ride-tier-card border border-slate-100 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition hover:bg-slate-50">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-xl"><i class="fas fa-bolt text-2xl"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-slate-900 text-base">Shupavu Comfort</h4>
-                                    <p class="text-xs text-slate-500">Newer cars with AC • 2 min away</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="font-bold text-slate-900 text-base">KES 500</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between mt-5 p-3 bg-slate-50 rounded-xl text-sm">
-                        <div class="flex items-center gap-2 font-medium text-slate-700">
-                            <i class="fas fa-wallet text-green-600"></i> M-PESA / Cash
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-400 text-xs"></i>
-                    </div>
-                </div>
-
-                <button onclick="navigateTo('screen-searching')" class="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 transition active:scale-[0.98] mt-4">
-                    Confirm Booking
-                </button>
-            </div>
-        </div>
-
-        <div id="screen-searching" class="app-screen flex-1 flex-col justify-center items-center p-6 bg-slate-900 text-white relative">
-            <div class="space-y-6 text-center z-10">
-                <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
-                    <div class="absolute inset-0 bg-orange-500 rounded-full animate-ping opacity-25"></div>
-                    <div class="absolute -inset-4 bg-orange-500 rounded-full animate-pulse opacity-10"></div>
-                    <div class="w-24 h-24 bg-orange-500 rounded-full flex items-center justify-center shadow-lg relative">
-                        <i class="fas fa-search-location text-3xl animate-pulse"></i>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-bold">Connecting your ride...</h3>
-                    <p class="text-slate-400 text-sm mt-2">Matching you with the nearest Shupavu driver.</p>
-                </div>
-            </div>
-
-            <button onclick="navigateTo('screen-match')" class="absolute bottom-8 bg-slate-800 text-slate-400 border border-slate-700 px-4 py-2 rounded-full text-xs hover:text-white transition">
-                Simulate Match found
+            <button onclick="navigateTo('screen-home')" class="w-full bg-slate-900 text-white font-extrabold py-4 rounded-2xl shadow-md active:scale-[0.99] transition tracking-wide">
+                Next
             </button>
         </div>
 
-        <div id="screen-match" class="app-screen flex-1 flex-col justify-between relative bg-slate-100">
-            <div class="flex-1 bg-slate-300 relative">
-                <div class="absolute inset-0 bg-slate-200 flex items-center justify-center text-slate-400 text-xs">Driver Tracking Map</div>
-                <div class="absolute top-1/2 left-1/2 text-orange-500 text-3xl -translate-y-6 animate-bounce"><i class="fas fa-car-side"></i></div>
+        <div id="screen-home" class="app-screen flex-1 flex-col justify-between relative bg-slate-50 pt-12">
+            <div class="absolute inset-0 realistic-map z-0">
+                <div class="road-primary"></div>
+                <div class="road-secondary"></div>
+                <div class="absolute top-1/4 left-1/3 text-slate-900 text-xl"><i class="fas fa-car-side filter drop-shadow"></i></div>
+                <div class="absolute top-2/3 right-1/3 text-slate-900 text-xl"><i class="fas fa-motorcycle filter drop-shadow"></i></div>
+                <div class="absolute top-[48%] left-[37%] flex items-center justify-center">
+                    <span class="absolute w-8 h-8 bg-blue-500/20 rounded-full animate-ping"></span>
+                    <div class="w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow-md z-10"></div>
+                </div>
             </div>
 
-            <div class="bg-white p-5 rounded-t-[32px] shadow-2xl border-t border-slate-100 space-y-4 z-10">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span class="bg-orange-100 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Arriving in 3 Mins</span>
-                        <h4 class="font-extrabold text-2xl text-slate-900 mt-1">KCD 432X</h4>
-                        <p class="text-sm text-slate-500 font-medium">Silver Toyota Fielder</p>
-                    </div>
-                    <div class="text-right">
-                        <div class="w-14 h-14 bg-slate-200 rounded-full overflow-hidden border border-slate-100 shadow-inner">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80" alt="Driver" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex items-center justify-end gap-1 text-xs font-bold text-amber-500 mt-1">
-                            <i class="fas fa-star text-[10px]"></i> 4.9
-                        </div>
-                    </div>
+            <div class="z-10 px-4 pt-4">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-lg border border-slate-100 flex items-center justify-center text-slate-800 font-bold cursor-pointer">
+                    <i class="fas fa-bars text-lg"></i>
                 </div>
-
-                <div class="h-[1px] bg-slate-100"></div>
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div>
-                            <p class="font-bold text-slate-800 text-base">David Omondi</p>
-                            <p class="text-xs text-slate-400">Shupavu Certified Driver</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <a href="tel:#" class="w-11 h-11 bg-slate-100 rounded-full flex items-center justify-center text-slate-700 hover:bg-slate-200 transition"><i class="fas fa-phone-alt"></i></a>
-                        <button class="w-11 h-11 bg-slate-100 rounded-full flex items-center justify-center text-slate-700 hover:bg-slate-200 transition"><i class="fas fa-comment-alt"></i></button>
-                    </div>
-                </div>
-
-                <button onclick="navigateTo('screen-home')" class="w-full bg-rose-50 text-rose-600 font-bold py-3.5 rounded-xl text-sm transition hover:bg-rose-100">
-                    Cancel Request
-                </button>
             </div>
-        </div>
 
-    </div>
-
-    <script>
-        function navigateTo(screenId) {
-            // Hide all screens
-            document.querySelectorAll('.app-screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            // Show targeted screen
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function confirmDestination() {
-            navigateTo('screen-options');
-        }
-
-        function selectTier(element) {
-            // Reset cards border styling
-            document.querySelectorAll('.ride-tier-card').forEach(card => {
-                card.classList.remove('border-orange-500', 'bg-orange-50/50');
-                card.classList.add('border-slate-100');
-            });
-            // Highlight selected
-            element.classList.remove('border-slate-100');
-            element.classList.add('border-orange-500', 'bg-orange-50/50');
-        }
-    </script>
-</body>
-      </html>
-                  
+            <div class="z-10 bg-white p-5 rounded-t-[32px] shadow-[0_-8px_30px_rgba(0,0,0,0.06)] border-t border-slate-1
+    
